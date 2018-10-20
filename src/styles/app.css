@@ -1,0 +1,13 @@
+.menu-link {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 1.5rem;
+    color: white;
+    z-index: 3;
+}
+
+.menu-link:focus {
+    outline: solid 2px #5b9dd9;
+}
+
