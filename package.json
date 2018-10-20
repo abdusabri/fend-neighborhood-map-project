@@ -9,6 +9,7 @@
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-icons": "^3.2.1",
+    "react-map-gl": "^3.3.7",
     "react-scripts": "2.0.5",
     "react-sidebar": "^3.0.2"
   },
@@ -26,5 +27,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "resize-observer-polyfill": "^1.5.0"
+  }
 }
