@@ -33,3 +33,9 @@
     cursor: pointer;
 }
 
+.map-marker {
+    color: #f10101;
+    font-size: 30px;
+    transform: translate(-20px,-40px);
+}
+

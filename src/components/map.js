@@ -60,9 +60,7 @@ class Map extends Component {
                         <Marker key={location.id}
                             longitude={location.longitude}
                             latitude={location.latitude}>
-                            <span><MdLocationOn 
-                                style={{color: 'red', fontSize: '30px',
-                                transform: 'translate(-20px,-40px)'}}/></span>
+                            <span><MdLocationOn className='map-marker'/></span>
                         </Marker>
                     ))}
 
