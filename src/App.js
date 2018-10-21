@@ -7,8 +7,6 @@ import { MdMenu } from 'react-icons/md';
 import Map from './components/map';
 import LocationsList from './components/locations-list'
 
-import LOCATIONS from './data/locations.json';
-
 const sidebarMediaQuery = window.matchMedia(`(min-width: 650px)`);
 const sidebarStyle = {
   sidebar: {
@@ -28,7 +26,7 @@ class App extends Component {
   state = {
     sidebarDocked: sidebarMediaQuery.matches,
     sidebarOpen: false,
-    locations: LOCATIONS
+    locations: []
   }
 
   componentDidMount() {
@@ -52,6 +50,10 @@ class App extends Component {
     }
   }
 
+  handleLocationsFiltered = (filteredLocations) => {
+    this.setState({ locations: filteredLocations });
+  }
+
   render() {
     return (
       <div>
@@ -68,7 +70,7 @@ class App extends Component {
             docked={this.state.sidebarDocked}
             onSetOpen={this.onSetSidebarOpen}
             styles={sidebarStyle}
-            sidebar={<LocationsList locations={this.state.locations}/>}>
+            sidebar={<LocationsList onLocationsFiltered={this.handleLocationsFiltered}/>}>
               <Map locations={this.state.locations}/>
           </Sidebar>
         </main>
