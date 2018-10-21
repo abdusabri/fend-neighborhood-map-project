@@ -1,0 +1,14 @@
+[
+    {
+        "id":1,
+        "name":"Reichstag",
+        "latitude":52.518503,
+        "longitude":13.376062
+    },
+    {
+        "id":2,
+        "name":"Forst Grunewald",
+        "latitude":52.484452858289536,
+        "longitude":13.236808776855469
+    }
+]

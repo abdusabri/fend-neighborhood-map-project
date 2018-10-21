@@ -5,11 +5,13 @@ import Header from './components/header';
 import Sidebar from 'react-sidebar';
 import { MdMenu } from 'react-icons/md';
 import Map from './components/map';
+import LocationsList from './components/locations-list'
 
 const sidebarMediaQuery = window.matchMedia(`(min-width: 650px)`);
 const sidebarStyle = {
   sidebar: {
-    top: 56
+    top: 56,
+    zIndex: 3
   },
   content: {
     top: 56
@@ -50,11 +52,11 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Header/>
+        <Header />
         {!this.state.sidebarDocked && (
           <button type='button'
                   className='btn btn-link menu-link' onClick={this.toggleOpen}>
-              <MdMenu/>
+              <MdMenu />
           </button>
         )}
         <main>
@@ -63,9 +65,8 @@ class App extends Component {
             docked={this.state.sidebarDocked}
             onSetOpen={this.onSetSidebarOpen}
             styles={sidebarStyle}
-            sidebar={<input id='sidebar' className='form-control form-control-lg' 
-                            type='text' placeholder='Filter locations'/>}>
-              <Map/>
+            sidebar={<LocationsList />}>
+              <Map />
           </Sidebar>
         </main>
       </div>
