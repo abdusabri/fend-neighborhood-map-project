@@ -9,9 +9,9 @@ class Map extends Component {
     
     state = {
         viewport: {
-            latitude: 37.785164,
-            longitude: -100,
-            zoom: 3.5,
+            latitude: 52.529,
+            longitude: 13.435,
+            zoom: 10.12,
             bearing: 0,
             pitch: 0,
             width: 500,
@@ -21,17 +21,19 @@ class Map extends Component {
 
     componentDidMount() {
         new ResizeObserver(this._resize).observe(document.getElementById('map'));
-        this._resize();
     }
 
     _resize = () => {
         const map = document.getElementById('map');
-    
+        if (!map) {
+            return;
+        }
+        
         this.setState({
             viewport: {
                 ...this.state.viewport,
-                width: map.clientWidth,
-                height: map.clientHeight
+                width: map.offsetWidth - 1, //If set to offsetWidth without subtracting 1, it causes in infinite resizing loop on Chrome
+                height: map.offsetHeight
             }
         });
     }
