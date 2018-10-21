@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ReactMapGL from 'react-map-gl';
+import ReactMapGL, { NavigationControl } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import ResizeObserver from 'resize-observer-polyfill';
 
@@ -49,7 +49,11 @@ class Map extends Component {
                 <ReactMapGL mapboxApiAccessToken={API_KEY}
                     mapStyle='mapbox://styles/mapbox/streets-v10'
                     {...this.state.viewport}
-                    onViewportChange={this._updateViewport}/>
+                    onViewportChange={this._updateViewport}>
+                    <div className='nav map-nav-control'>
+                        <NavigationControl onViewportChange={this._updateViewport} />
+                    </div>
+                </ReactMapGL>
             </div>
         )
     };
