@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
-import ReactMapGL, { NavigationControl } from 'react-map-gl';
+import ReactMapGL, { NavigationControl, Marker } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import ResizeObserver from 'resize-observer-polyfill';
+import { MdLocationOn } from 'react-icons/md';
+import PropTypes from 'prop-types';
 
 const API_KEY = 'pk.eyJ1IjoiYWJkdXNhYnJpIiwiYSI6ImNqbmg0dG9vMzA5YnMzcHRsc3NyYW9pZ3MifQ.GznJS1gglPuQoa-3RGeGeA';
 
 class Map extends Component {
+    static propTypes = {
+        locations: PropTypes.array.isRequired
+    }
     
     state = {
         viewport: {
@@ -20,10 +25,10 @@ class Map extends Component {
     }
 
     componentDidMount() {
-        new ResizeObserver(this._resize).observe(document.getElementById('map'));
+        new ResizeObserver(this.resize).observe(document.getElementById('map'));
     }
 
-    _resize = () => {
+    resize = () => {
         const map = document.getElementById('map');
         if (!map) {
             return;
@@ -32,26 +37,37 @@ class Map extends Component {
         this.setState({
             viewport: {
                 ...this.state.viewport,
-                width: map.offsetWidth - 1, //If set to offsetWidth without subtracting 1, it causes in infinite resizing loop on Chrome
+                width: map.offsetWidth,
                 height: map.offsetHeight
             }
         });
     }
 
-    _updateViewport = (viewport) => {
+    updateViewport = (viewport) => {
         this.setState({viewport});
     }
 
     render() {
         return (
             <div id='map' role='application' aria-label='Map with locations'
-                style={{height: '100%'}}>
+                style={{height: '100%', width: '100%'}}>
                 <ReactMapGL mapboxApiAccessToken={API_KEY}
                     mapStyle='mapbox://styles/mapbox/streets-v10'
                     {...this.state.viewport}
-                    onViewportChange={this._updateViewport}>
+                    onViewportChange={this.updateViewport}>
+
+                    {this.props.locations.map((location) => (
+                        <Marker key={location.id}
+                            longitude={location.longitude}
+                            latitude={location.latitude}>
+                            <span><MdLocationOn 
+                                style={{color: 'red', fontSize: '30px',
+                                transform: 'translate(-20px,-40px)'}}/></span>
+                        </Marker>
+                    ))}
+
                     <div className='nav map-nav-control'>
-                        <NavigationControl onViewportChange={this._updateViewport} />
+                        <NavigationControl onViewportChange={this.updateViewport} />
                     </div>
                 </ReactMapGL>
             </div>

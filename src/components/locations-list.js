@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-
-import LOCATIONS from '../data/locations.json' 
+import PropTypes from 'prop-types';
 
 class LocationsList extends Component {
-
-    state = {
-        locations: LOCATIONS
+    static propTypes = {
+        locations: PropTypes.array.isRequired
     }
 
     render() {
@@ -15,7 +13,7 @@ class LocationsList extends Component {
                     type='text' placeholder='Filter locations'
                     aria-label='Filter locations'/>
                 <ul className='list-group list-group-flush'>
-                    {this.state.locations.map((location) => (
+                    {this.props.locations.map((location) => (
                         <li key={location.id}
                             className="list-group-item list-group-item-action"
                             tabIndex='0'>
