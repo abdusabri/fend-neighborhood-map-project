@@ -50,6 +50,13 @@ class LocationsList extends Component {
         this.props.onLocationClicked(e.target.value);
     }
 
+    handleLocationKeyUp = (e) => {
+        // Enter or Space keys
+        if (e.keyCode === 32 || e.keyCode === 13) {
+            this.handleLocationClick(e);
+        }
+    }
+
     render() {
         return (
             <article className='locations-list'>
@@ -65,7 +72,8 @@ class LocationsList extends Component {
                             value={location.id}
                             className='list-group-item list-group-item-action'
                             tabIndex='0'
-                            onClick={this.handleLocationClick}>
+                            onClick={this.handleLocationClick}
+                            onKeyUp={this.handleLocationKeyUp}>
                             {location.name}
                         </li>
                     ))}
