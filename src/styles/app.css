@@ -36,6 +36,12 @@
 .map-marker {
     color: #f10101;
     font-size: 30px;
-    transform: translate(-20px,-40px);
+    transform: translate(-15px,-30px);
+}
+
+.map-marker--selected {
+    color: #0105f1;
+    font-size: 34px;
+    transform: translate(-17px,-34px);
 }
 

@@ -4,6 +4,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import ResizeObserver from 'resize-observer-polyfill';
 import { MdLocationOn } from 'react-icons/md';
 import PropTypes from 'prop-types';
+import * as ElementHelper from '../util/element-helper';
 
 const API_KEY = 'pk.eyJ1IjoiYWJkdXNhYnJpIiwiYSI6ImNqbmg0dG9vMzA5YnMzcHRsc3NyYW9pZ3MifQ.GznJS1gglPuQoa-3RGeGeA';
 
@@ -47,6 +48,11 @@ class Map extends Component {
         this.setState({viewport});
     }
 
+    selectLocation = (locationId) => {
+        ElementHelper.selectElement('map-marker--selected',
+            `marker-icon-${locationId}`);
+    }
+
     render() {
         return (
             <div id='map' role='application' aria-label='Map with locations'
@@ -60,7 +66,8 @@ class Map extends Component {
                         <Marker key={location.id}
                             longitude={location.longitude}
                             latitude={location.latitude}>
-                            <span><MdLocationOn className='map-marker'/></span>
+                            <span><MdLocationOn className='map-marker'
+                                id={`marker-icon-${location.id}`}/></span>
                         </Marker>
                     ))}
 

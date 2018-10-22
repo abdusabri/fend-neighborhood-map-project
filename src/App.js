@@ -22,6 +22,10 @@ const sidebarStyle = {
 }
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.mapRef = React.createRef();
+  }
   
   state = {
     sidebarDocked: sidebarMediaQuery.matches,
@@ -54,6 +58,10 @@ class App extends Component {
     this.setState({ locations: filteredLocations });
   }
 
+  handleLocationClicked = (locationId) => {
+    this.mapRef.current.selectLocation(locationId);
+  }
+
   render() {
     return (
       <div>
@@ -70,8 +78,10 @@ class App extends Component {
             docked={this.state.sidebarDocked}
             onSetOpen={this.onSetSidebarOpen}
             styles={sidebarStyle}
-            sidebar={<LocationsList onLocationsFiltered={this.handleLocationsFiltered}/>}>
-              <Map locations={this.state.locations}/>
+            sidebar={<LocationsList onLocationsFiltered={this.handleLocationsFiltered}
+            onLocationClicked={this.handleLocationClicked}/>}>
+              <Map locations={this.state.locations}
+                ref={this.mapRef}/>
           </Sidebar>
         </main>
       </div>
