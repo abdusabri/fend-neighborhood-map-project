@@ -2,14 +2,19 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
 import escapeRegExp from 'escape-string-regexp';
-import * as ElementHelper from '../util/element-helper';
 
 import LOCATIONS from '../data/locations.json';
 
 class LocationsList extends Component {
     static propTypes = {
         onLocationsFiltered: PropTypes.func.isRequired,
-        onLocationClicked: PropTypes.func.isRequired
+        onLocationSelected: PropTypes.func.isRequired,
+        selectedLocation: PropTypes.shape({
+            id: PropTypes.number.isRequired,
+            name: PropTypes.string.isRequired,
+            latitude: PropTypes.number.isRequired,
+            longitude: PropTypes.number.isRequired
+        })
     }
 
     state = {
@@ -36,6 +41,12 @@ class LocationsList extends Component {
             const match = new RegExp(escapeRegExp(filterText), 'i');
             const filteredLocations =
                 LOCATIONS.filter((location) => match.test(location.name));
+            // Clear selected location if it has been filtered-out 
+            if (this.props.selectedLocation && 
+                filteredLocations.findIndex((location) => 
+                location.id === this.props.selectedLocation.id) === -1) {
+                    this.props.onLocationSelected(null);
+            }
             this.setState({ locations: filteredLocations });
             this.props.onLocationsFiltered(filteredLocations);
         }
@@ -46,14 +57,15 @@ class LocationsList extends Component {
     }
 
     handleLocationClick = (e) => {
-        ElementHelper.selectElement('active', e.target.id);
-        this.props.onLocationClicked(e.target.value);
+        this.props.onLocationSelected(this.state.locations.find(
+            (location) => location.id === e.target.value));
     }
 
     handleLocationKeyUp = (e) => {
         // Enter or Space keys
         if (e.keyCode === 32 || e.keyCode === 13) {
-            this.handleLocationClick(e);
+            this.props.onLocationSelected(this.state.locations.find(
+                (location) => location.id === e.target.value));
         }
     }
 
@@ -68,9 +80,11 @@ class LocationsList extends Component {
                 <ul className='list-group list-group-flush'>
                     {this.state.locations.map((location) => (
                         <li key={location.id}
-                            id={`loc-${location.id}`}
                             value={location.id}
-                            className='list-group-item list-group-item-action'
+                            className={(this.props.selectedLocation &&
+                                this.props.selectedLocation.id === location.id) ?
+                                'list-group-item list-group-item-action active' :
+                                'list-group-item list-group-item-action'}
                             tabIndex='0'
                             onClick={this.handleLocationClick}
                             onKeyUp={this.handleLocationKeyUp}>
