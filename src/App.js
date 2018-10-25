@@ -81,7 +81,8 @@ class App extends Component {
               onLocationSelected={this.handleLocationSelected}
               selectedLocation={this.state.selectedLocation}/>}>
               <Map locations={this.state.locations}
-                selectedLocation={this.state.selectedLocation}/>
+                selectedLocation={this.state.selectedLocation}
+                onLocationSelected={this.handleLocationSelected}/>
           </Sidebar>
         </main>
       </div>

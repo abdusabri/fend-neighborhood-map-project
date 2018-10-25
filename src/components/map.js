@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactMapGL, { NavigationControl, Marker } from 'react-map-gl';
+import ReactMapGL, { NavigationControl, Marker, Popup } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import ResizeObserver from 'resize-observer-polyfill';
 import { MdLocationOn } from 'react-icons/md';
@@ -22,7 +22,8 @@ class Map extends Component {
             name: PropTypes.string.isRequired,
             latitude: PropTypes.number.isRequired,
             longitude: PropTypes.number.isRequired
-        })
+        }),
+        onLocationSelected: PropTypes.func.isRequired
     }
     
     state = {
@@ -60,6 +61,10 @@ class Map extends Component {
         this.setState({viewport});
     }
 
+    handlePopupClose = () => {
+        this.props.onLocationSelected(null);
+    }
+
     render() {
         return (
             <div id='map' role='application' aria-label='Map with locations'
@@ -80,6 +85,16 @@ class Map extends Component {
                             </span>
                         </Marker>
                     ))}
+
+                    {this.props.selectedLocation && (
+                        <Popup tipSize={10}
+                            anchor='top'
+                            longitude={this.props.selectedLocation.longitude}
+                            latitude={this.props.selectedLocation.latitude}
+                            onClose={this.handlePopupClose}>
+                            {this.props.selectedLocation.name}
+                        </Popup>
+                    )}
 
                     <div className='nav map-nav-control'>
                         <NavigationControl onViewportChange={this.updateViewport} />
