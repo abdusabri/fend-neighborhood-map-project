@@ -65,6 +65,10 @@ class Map extends Component {
         this.props.onLocationSelected(null);
     }
 
+    handleMarkerClick = (location) => {
+        this.props.onLocationSelected(location);
+    }
+
     render() {
         return (
             <div id='map' role='application' aria-label='Map with locations'
@@ -81,7 +85,8 @@ class Map extends Component {
                             <span><MdLocationOn 
                                 className={(this.props.selectedLocation &&
                                     this.props.selectedLocation.id === location.id) ?
-                                    'map-marker map-marker--selected' : 'map-marker'}/>
+                                    'map-marker map-marker--selected' : 'map-marker'}
+                                onClick={() => (this.handleMarkerClick(location))}/>
                             </span>
                         </Marker>
                     ))}
