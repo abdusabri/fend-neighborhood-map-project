@@ -23,7 +23,8 @@ class Map extends Component {
             latitude: PropTypes.number.isRequired,
             longitude: PropTypes.number.isRequired
         }),
-        onLocationSelected: PropTypes.func.isRequired
+        onLocationSelected: PropTypes.func.isRequired,
+        onMapLoaded: PropTypes.func.isRequired
     }
     
     state = {
@@ -73,10 +74,12 @@ class Map extends Component {
         return (
             <div id='map' role='application' aria-label='Map with locations'
                 style={{height: '100%', width: '100%'}}>
+
                 <ReactMapGL mapboxApiAccessToken={API_KEY}
                     mapStyle='mapbox://styles/mapbox/streets-v10'
                     {...this.state.viewport}
-                    onViewportChange={this.updateViewport}>
+                    onViewportChange={this.updateViewport}
+                    onLoad={this.props.onMapLoaded}>
 
                     {this.props.locations.map((location) => (
                         <Marker key={location.id}

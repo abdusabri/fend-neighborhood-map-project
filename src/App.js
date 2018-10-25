@@ -27,7 +27,8 @@ class App extends Component {
     sidebarDocked: sidebarMediaQuery.matches,
     sidebarOpen: false,
     locations: [],
-    selectedLocation: null
+    selectedLocation: null,
+    isMapLoaded: false
   }
 
   componentDidMount() {
@@ -63,12 +64,20 @@ class App extends Component {
     return (
       <div>
         <Header />
-        {!this.state.sidebarDocked && (
+        
+        {!this.state.isMapLoaded && 
+          (<div className='loader-container'>
+            <div className='loader'></div>
+          </div>
+        )}
+
+        {!this.state.sidebarDocked && this.state.isMapLoaded && (
           <button type='button'
                   className='btn btn-link menu-link' onClick={this.toggleOpen}>
               <MdMenu />
           </button>
         )}
+
         <main>
           <Sidebar
             open={this.state.sidebarOpen}
@@ -82,7 +91,8 @@ class App extends Component {
               selectedLocation={this.state.selectedLocation}/>}>
               <Map locations={this.state.locations}
                 selectedLocation={this.state.selectedLocation}
-                onLocationSelected={this.handleLocationSelected}/>
+                onLocationSelected={this.handleLocationSelected}
+                onMapLoaded={() => this.setState({ isMapLoaded: true })}/>
           </Sidebar>
         </main>
       </div>

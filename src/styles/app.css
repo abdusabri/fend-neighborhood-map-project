@@ -45,3 +45,30 @@
     transform: translate(-17px,-34px);
 }
 
+.loader {
+    border: 16px solid #f3f3f3;
+    border-top: 16px solid #3498db;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loader-container {
+    position: absolute;
+    right: 0;
+    top: 56px;
+    width: 100%;
+    height: calc(100% - 56px);
+    background-color: #ffffff;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
