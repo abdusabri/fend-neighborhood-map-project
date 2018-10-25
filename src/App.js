@@ -76,6 +76,7 @@ class App extends Component {
             onSetOpen={this.onSetSidebarOpen}
             styles={sidebarStyle}
             sidebar={<LocationsList 
+              locations={this.state.locations}
               onLocationsFiltered={this.handleLocationsFiltered}
               onLocationSelected={this.handleLocationSelected}
               selectedLocation={this.state.selectedLocation}/>}>

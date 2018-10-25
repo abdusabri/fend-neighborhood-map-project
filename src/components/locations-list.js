@@ -7,6 +7,14 @@ import LOCATIONS from '../data/locations.json';
 
 class LocationsList extends Component {
     static propTypes = {
+        locations: PropTypes.arrayOf(
+            PropTypes.shape({
+                id: PropTypes.number.isRequired,
+                name: PropTypes.string.isRequired,
+                latitude: PropTypes.number.isRequired,
+                longitude: PropTypes.number.isRequired
+            })
+        ),
         onLocationsFiltered: PropTypes.func.isRequired,
         onLocationSelected: PropTypes.func.isRequired,
         selectedLocation: PropTypes.shape({
@@ -18,12 +26,11 @@ class LocationsList extends Component {
     }
 
     state = {
-        locations: LOCATIONS,
         filterText: ''
     }
 
     componentDidMount() {
-        this.props.onLocationsFiltered(this.state.locations);
+        this.props.onLocationsFiltered(LOCATIONS);
     }
 
     handleTextChange = (e) => {
@@ -35,19 +42,17 @@ class LocationsList extends Component {
     
     filterLocations(filterText) {
         if (filterText.length === 0) {
-            this.setState({ locations: LOCATIONS });
             this.props.onLocationsFiltered(LOCATIONS);
         } else {
             const match = new RegExp(escapeRegExp(filterText), 'i');
             const filteredLocations =
-                LOCATIONS.filter((location) => match.test(location.name));
+                this.props.locations.filter((location) => match.test(location.name));
             // Clear selected location if it has been filtered-out 
             if (this.props.selectedLocation && 
                 filteredLocations.findIndex((location) => 
                 location.id === this.props.selectedLocation.id) === -1) {
                     this.props.onLocationSelected(null);
             }
-            this.setState({ locations: filteredLocations });
             this.props.onLocationsFiltered(filteredLocations);
         }
     }
@@ -57,14 +62,14 @@ class LocationsList extends Component {
     }
 
     handleLocationClick = (e) => {
-        this.props.onLocationSelected(this.state.locations.find(
+        this.props.onLocationSelected(this.props.locations.find(
             (location) => location.id === e.target.value));
     }
 
     handleLocationKeyUp = (e) => {
         // Enter or Space keys
         if (e.keyCode === 32 || e.keyCode === 13) {
-            this.props.onLocationSelected(this.state.locations.find(
+            this.props.onLocationSelected(this.props.locations.find(
                 (location) => location.id === e.target.value));
         }
     }
@@ -78,7 +83,7 @@ class LocationsList extends Component {
                     onChange={this.handleTextChange}
                     value={this.state.filterText}/>
                 <ul className='list-group list-group-flush'>
-                    {this.state.locations.map((location) => (
+                    {this.props.locations.map((location) => (
                         <li key={location.id}
                             value={location.id}
                             className={(this.props.selectedLocation &&
