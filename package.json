@@ -10,6 +10,7 @@
     "popper.js": "^1.14.4",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
+    "react-foursquare": "^1.0.3",
     "react-icons": "^3.2.1",
     "react-map-gl": "^3.3.7",
     "react-scripts": "2.0.5",
