@@ -4,6 +4,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import ResizeObserver from 'resize-observer-polyfill';
 import { MdLocationOn } from 'react-icons/md';
 import PropTypes from 'prop-types';
+import LocationInfo from './location-info';
 
 const API_KEY = 'pk.eyJ1IjoiYWJkdXNhYnJpIiwiYSI6ImNqbmg0dG9vMzA5YnMzcHRsc3NyYW9pZ3MifQ.GznJS1gglPuQoa-3RGeGeA';
 
@@ -101,6 +102,7 @@ class Map extends Component {
                             latitude={this.props.selectedLocation.latitude}
                             onClose={this.handlePopupClose}>
                             {this.props.selectedLocation.name}
+                            <LocationInfo location={this.props.selectedLocation}/>
                         </Popup>
                     )}
 

@@ -57,6 +57,7 @@ class App extends Component {
   }
 
   handleLocationSelected = (location) => {
+    this.setState({ selectedLocation : null });
     this.setState({ selectedLocation : location });
   }
 
