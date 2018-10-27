@@ -5,7 +5,8 @@ import Header from './components/header';
 import Sidebar from 'react-sidebar';
 import { MdMenu } from 'react-icons/md';
 import Map from './components/map';
-import LocationsList from './components/locations-list'
+import LocationsList from './components/locations-list';
+import Loader from './components/loader';
 
 const sidebarMediaQuery = window.matchMedia(`(min-width: 650px)`);
 const sidebarStyle = {
@@ -66,11 +67,7 @@ class App extends Component {
       <div>
         <Header />
         
-        {!this.state.isMapLoaded && 
-          (<div className='loader-container'>
-            <div className='loader'></div>
-          </div>
-        )}
+        {!this.state.isMapLoaded && <Loader isMain={true} />}
 
         {!this.state.sidebarDocked && this.state.isMapLoaded && (
           <button type='button'

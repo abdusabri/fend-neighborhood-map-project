@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as LocationsAPI from '../data/locations-api';
 import PropTypes from 'prop-types';
 import { MdError } from 'react-icons/md';
+import Loader from './loader';
 
 class LocationInfo extends Component {
     static propTypes = {
@@ -52,11 +53,7 @@ class LocationInfo extends Component {
             <section className='location-info'>
                 <h3 className='h5 text-primary'>{this.props.location.name}</h3>
                 <hr/>
-                {this.state.isLoading && 
-                    (<div className='location-loader-container'>
-                        <div className='loader'></div>
-                    </div>
-                )}
+                {this.state.isLoading && <Loader isMain={false}/>}
 
                 {!this.state.isLoading && this.state.isError &&
                     (<div className='location-loader-container container-error'>
