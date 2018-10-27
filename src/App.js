@@ -7,6 +7,7 @@ import { MdMenu } from 'react-icons/md';
 import Map from './components/map';
 import LocationsList from './components/locations-list';
 import Loader from './components/loader';
+import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom'
 
 const sidebarMediaQuery = window.matchMedia(`(min-width: 650px)`);
 const sidebarStyle = {
@@ -29,7 +30,8 @@ class App extends Component {
     sidebarOpen: false,
     locations: [],
     selectedLocation: null,
-    isMapLoaded: false
+    isMapLoaded: false,
+    initialRender: true
   }
 
   componentDidMount() {
@@ -57,9 +59,36 @@ class App extends Component {
     this.setState({ locations: filteredLocations });
   }
 
-  handleLocationSelected = (location) => {
-    this.setState({ selectedLocation : null });
-    this.setState({ selectedLocation : location });
+  handleLocationSelected = (location, history) => {
+    if (!location && !this.state.selectedLocation) {
+      return;
+    }
+
+    let shouldUpdate = false;
+
+    if (!location && this.state.selectedLocation) {
+      shouldUpdate = true;
+    } else {
+      if (!this.state.selectedLocation || 
+        this.state.selectedLocation.id !== location.id) {
+          shouldUpdate = true;
+      }
+    }
+
+    if (shouldUpdate) {
+      this.setState({ selectedLocation : null });
+      this.setState({ selectedLocation : location });
+
+      const path = (location) ? '/' + location.id : '/';
+      if (this.state.initialRender) {
+        history.push(path);
+        this.setState({ initialRender: false });
+      } else {
+        if (history.action !== 'POP') {
+          history.push(path);
+        }
+      }
+    }
   }
 
   render() {
@@ -77,21 +106,30 @@ class App extends Component {
         )}
 
         <main>
-          <Sidebar
-            open={this.state.sidebarOpen}
-            docked={this.state.sidebarDocked}
-            onSetOpen={this.onSetSidebarOpen}
-            styles={sidebarStyle}
-            sidebar={<LocationsList 
-              locations={this.state.locations}
-              onLocationsFiltered={this.handleLocationsFiltered}
-              onLocationSelected={this.handleLocationSelected}
-              selectedLocation={this.state.selectedLocation}/>}>
-              <Map locations={this.state.locations}
-                selectedLocation={this.state.selectedLocation}
-                onLocationSelected={this.handleLocationSelected}
-                onMapLoaded={() => this.setState({ isMapLoaded: true })}/>
-          </Sidebar>
+          <BrowserRouter>
+            <Switch>
+              <Route exact path='(/[1-2]?)' render={({ history }) => 
+                <Sidebar
+                  open={this.state.sidebarOpen}
+                  docked={this.state.sidebarDocked}
+                  onSetOpen={this.onSetSidebarOpen}
+                  styles={sidebarStyle}
+                  sidebar={<LocationsList 
+                    locations={this.state.locations}
+                    onLocationsFiltered={this.handleLocationsFiltered}
+                    onLocationSelected={(location) => 
+                      this.handleLocationSelected(location, history)}
+                    selectedLocation={this.state.selectedLocation}/>}>
+                    <Map locations={this.state.locations}
+                        selectedLocation={this.state.selectedLocation}
+                        onLocationSelected={this.handleLocationSelected}
+                        onMapLoaded={() => this.setState({ isMapLoaded: true })} 
+                        history={history}/>
+                  </Sidebar>
+              }/>
+              <Redirect from='*' to='/' />
+            </Switch>
+          </BrowserRouter>
         </main>
       </div>
     );

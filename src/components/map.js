@@ -25,7 +25,8 @@ class Map extends Component {
             longitude: PropTypes.number.isRequired
         }),
         onLocationSelected: PropTypes.func.isRequired,
-        onMapLoaded: PropTypes.func.isRequired
+        onMapLoaded: PropTypes.func.isRequired,
+        history: PropTypes.object.isRequired
     }
     
     state = {
@@ -64,12 +65,24 @@ class Map extends Component {
     }
 
     handlePopupClose = () => {
-        this.props.onLocationSelected(null);
+        this.props.onLocationSelected(null, this.props.history);
     }
 
     handleMarkerClick = (location) => {
-        this.props.onLocationSelected(location);
+        this.props.onLocationSelected(location, this.props.history);
     }
+    
+    componentDidUpdate() {
+        const strLocId = this.props.history.location.pathname.substr(1);
+        if (strLocId && strLocId.length > 0) {
+            const locationId = parseInt(strLocId);
+            this.props.onLocationSelected(this.props.locations.find(
+                (location) => location.id === locationId
+            ), this.props.history)
+        } else {
+            this.props.onLocationSelected(null, this.props.history);
+        }
+      }
 
     render() {
         return (
