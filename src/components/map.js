@@ -100,8 +100,8 @@ class Map extends Component {
                             anchor='top'
                             longitude={this.props.selectedLocation.longitude}
                             latitude={this.props.selectedLocation.latitude}
-                            onClose={this.handlePopupClose}>
-                            {this.props.selectedLocation.name}
+                            onClose={this.handlePopupClose}
+                            closeOnClick={false}>
                             <LocationInfo location={this.props.selectedLocation}/>
                         </Popup>
                     )}

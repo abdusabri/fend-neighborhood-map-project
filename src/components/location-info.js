@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as LocationsAPI from '../data/locations-api';
 import PropTypes from 'prop-types';
+import { MdError } from 'react-icons/md';
 
 class LocationInfo extends Component {
     static propTypes = {
@@ -13,6 +14,8 @@ class LocationInfo extends Component {
     }
 
     state = {
+        isLoading: true,
+        isError: false,
         locationInfo: {}
     }
 
@@ -22,23 +25,58 @@ class LocationInfo extends Component {
 
     componentDidUpdate(prevProps) {
         if (prevProps.location.id !== this.props.location.id) {
-            this.setState({locationInfo:''});
+            this.setState({
+                locationInfo: {},
+                isLoading: true,
+                isError: false
+            });
             this.getLocationInfo(this.props.location);
         }
     }
 
     async getLocationInfo(location) {
         LocationsAPI.getLocationInfo(location)
-            .then(res => this.setState({locationInfo:res}))
-            .catch((err) => this.setState({locationInfo:err}));
+            .then(res => this.setState({
+                locationInfo: res,
+                isLoading: false
+            }))
+            .catch((err) => this.setState({
+                locationInfo: {},
+                isLoading: false,
+                isError: true
+            }));
     }
 
     render() {
         return (
-            <div>
-                <div><img alt={this.state.locationInfo.name} src={this.state.locationInfo.photo}/></div>
-                <div><a href={this.state.locationInfo.url} target='_new'> View on Foursquare </a></div>
-            </div>
+            <section className='location-info'>
+                <h3 className='h5 text-primary'>{this.props.location.name}</h3>
+                <hr/>
+                {this.state.isLoading && 
+                    (<div className='location-loader-container'>
+                        <div className='loader'></div>
+                    </div>
+                )}
+
+                {!this.state.isLoading && this.state.isError &&
+                    (<div className='location-loader-container container-error'>
+                        <MdError className='error-icon text-warning'/>
+                        <div className='alert alert-warning alert-no-border text-center' role='alert'>
+                            Oops! <br/> Something is not right :(
+                        </div>
+                    </div>
+                )}
+
+                {!this.state.isLoading && !this.state.isError &&
+                    (<div>
+                        <img alt={this.state.locationInfo.name} 
+                            src={this.state.locationInfo.photo}/>
+
+                        <div><a href={this.state.locationInfo.url} 
+                            target='_new'> View on Foursquare </a></div>
+                    </div>
+                )}
+            </section>
         )
       }
 }

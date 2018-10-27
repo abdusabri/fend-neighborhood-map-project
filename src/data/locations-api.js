@@ -64,7 +64,7 @@ function getPhoto(venue) {
             const groups = venue.photos.groups;
             const items = (groups.length > 1)? groups[1].items : groups[0].items;
             if (Array.isArray(items) && items.length > 0) {
-                photo = `${items[0].prefix}width200${items[0].suffix}`;
+                photo = `${items[0].prefix}width220${items[0].suffix}`;
             }
     }
 
