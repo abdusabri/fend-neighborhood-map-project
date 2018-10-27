@@ -56,7 +56,7 @@ class LocationInfo extends Component {
                 {this.state.isLoading && <Loader isMain={false}/>}
 
                 {!this.state.isLoading && this.state.isError &&
-                    (<div className='location-loader-container container-error'>
+                    (<div className='content-loader-container container-error'>
                         <MdError className='error-icon text-warning'/>
                         <div className='alert alert-warning alert-no-border text-center' role='alert'>
                             Oops! <br/> Something is not right :(
