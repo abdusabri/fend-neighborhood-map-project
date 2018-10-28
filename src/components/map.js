@@ -120,11 +120,13 @@ class Map extends Component {
 
                 {!this.state.hasError &&
                     (<ReactMapGL mapboxApiAccessToken={API_KEY}
-                        mapStyle='mapbox://styles/mapbox/streets-v10'
+                        mapStyle='mapbox://styles/mapbox/streets-v10??optimize=true'
                         {...this.state.viewport}
                         onViewportChange={this.updateViewport}
                         onLoad={this.handleMapLoaded}
-                        onError={this.handleOnError}>
+                        onError={this.handleOnError}
+                        touchRotate={true}
+                        getCursor={({isDragging, isHovering}) => isDragging ? 'move' : 'default'}>
     
                         {this.props.locations.map((location) => (
                             <Marker key={location.id}

@@ -37,6 +37,7 @@
     color: #f10101;
     font-size: 30px;
     transform: translate(-15px,-30px);
+    cursor: pointer;
 }
 
 .map-marker--selected {
