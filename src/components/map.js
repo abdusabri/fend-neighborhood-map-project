@@ -26,8 +26,7 @@ class Map extends Component {
             longitude: PropTypes.number.isRequired
         }),
         onLocationSelected: PropTypes.func.isRequired,
-        onMapLoaded: PropTypes.func.isRequired,
-        history: PropTypes.object.isRequired
+        onMapLoaded: PropTypes.func.isRequired
     }
     
     state = {
@@ -77,23 +76,11 @@ class Map extends Component {
     }
 
     handlePopupClose = () => {
-        this.props.onLocationSelected(null, this.props.history);
+        this.props.onLocationSelected(null);
     }
 
     handleMarkerClick = (location) => {
-        this.props.onLocationSelected(location, this.props.history);
-    }
-    
-    componentDidUpdate() {
-        const strLocId = this.props.history.location.pathname.substr(1);
-        if (strLocId && strLocId.length > 0) {
-            const locationId = parseInt(strLocId);
-            this.props.onLocationSelected(this.props.locations.find(
-                (location) => location.id === locationId
-            ), this.props.history)
-        } else {
-            this.props.onLocationSelected(null, this.props.history);
-        }
+        this.props.onLocationSelected(location);
     }
 
     handleOnError = () => {
@@ -126,7 +113,7 @@ class Map extends Component {
                         onLoad={this.handleMapLoaded}
                         onError={this.handleOnError}
                         touchRotate={true}
-                        getCursor={({isDragging, isHovering}) => isDragging ? 'move' : 'default'}>
+                        getCursor={({isDragging}) => isDragging ? 'move' : 'default'}>
     
                         {this.props.locations.map((location) => (
                             <Marker key={location.id}

@@ -7,7 +7,7 @@ import { MdMenu } from 'react-icons/md';
 import Map from './components/map';
 import LocationsList from './components/locations-list';
 import Loader from './components/loader';
-import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom'
+import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 
 const sidebarMediaQuery = window.matchMedia(`(min-width: 650px)`);
 const sidebarStyle = {
@@ -24,6 +24,10 @@ const sidebarStyle = {
 }
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.routeRef = React.createRef(); 
+  }
 
   state = {
     sidebarDocked: sidebarMediaQuery.matches,
@@ -36,6 +40,28 @@ class App extends Component {
 
   componentDidMount() {
     sidebarMediaQuery.addListener(this.mediaQueryChanged);
+    
+    if (this.routeRef.current) {
+      this.routeRef.current.context.router.history
+        .listen((location, action) => {
+          if (action === 'POP') {
+            const strLocId = location.pathname.substr(1);
+            if (strLocId && strLocId.length > 0) {
+              const locationId = parseInt(strLocId);
+              const targetLocation = this.state.locations.find(
+                (location) => location.id === locationId);
+              if (targetLocation) {
+                this.handleLocationSelected(targetLocation, false);
+              } else {
+                this.handleLocationSelected(null, true);
+              }
+              
+            } else {
+              this.handleLocationSelected(null, false);
+            }
+          }
+      });
+    }
   }
 
   mediaQueryChanged = () => {
@@ -59,7 +85,7 @@ class App extends Component {
     this.setState({ locations: filteredLocations });
   }
 
-  handleLocationSelected = (location, history) => {
+  handleLocationSelected = (location, pushToHistory=true) => {
     if (!location && !this.state.selectedLocation) {
       return;
     }
@@ -80,13 +106,26 @@ class App extends Component {
       this.setState({ selectedLocation : location });
 
       const path = (location) ? '/' + location.id : '/';
-      if (this.state.initialRender) {
+      const history = this.routeRef.current.context.router.history;
+      if (pushToHistory) {
         history.push(path);
-        this.setState({ initialRender: false });
+      }
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.state.initialRender === true) {
+      this.setState({initialRender: false});
+
+      const history = this.routeRef.current.context.router.history;
+
+      const strLocId = history.location.pathname.substr(1);
+      if (strLocId && strLocId.length > 0) {
+        const locationId = parseInt(strLocId);
+        this.handleLocationSelected(this.state.locations.find(
+          (location) => location.id === locationId));
       } else {
-        if (history.action !== 'POP') {
-          history.push(path);
-        }
+        this.handleLocationSelected(null);
       }
     }
   }
@@ -108,7 +147,7 @@ class App extends Component {
         <main>
           <BrowserRouter>
             <Switch>
-              <Route exact path='(/[1-2]?)' render={({ history }) => 
+              <Route ref={this.routeRef} exact path='(/[1-2]?)' render={() => 
                 <Sidebar
                   open={this.state.sidebarOpen}
                   docked={this.state.sidebarDocked}
@@ -117,14 +156,12 @@ class App extends Component {
                   sidebar={<LocationsList 
                     locations={this.state.locations}
                     onLocationsFiltered={this.handleLocationsFiltered}
-                    onLocationSelected={(location) => 
-                      this.handleLocationSelected(location, history)}
+                    onLocationSelected={this.handleLocationSelected}
                     selectedLocation={this.state.selectedLocation}/>}>
                     <Map locations={this.state.locations}
                         selectedLocation={this.state.selectedLocation}
                         onLocationSelected={this.handleLocationSelected}
-                        onMapLoaded={() => this.setState({ isMapLoading: false })} 
-                        history={history}/>
+                        onMapLoaded={() => this.setState({ isMapLoading: false })} />
                   </Sidebar>
               }/>
               <Redirect from='*' to='/' />
