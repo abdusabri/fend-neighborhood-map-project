@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import * as LocationsAPI from '../data/locations-api';
 import PropTypes from 'prop-types';
-import { MdError } from 'react-icons/md';
 import Loader from './loader';
+import ContentError from './content-error';
 
 class LocationInfo extends Component {
     static propTypes = {
@@ -16,7 +16,7 @@ class LocationInfo extends Component {
 
     state = {
         isLoading: true,
-        isError: false,
+        hasError: false,
         locationInfo: {}
     }
 
@@ -29,7 +29,7 @@ class LocationInfo extends Component {
             this.setState({
                 locationInfo: {},
                 isLoading: true,
-                isError: false
+                hasError: false
             });
             this.getLocationInfo(this.props.location);
         }
@@ -44,7 +44,7 @@ class LocationInfo extends Component {
             .catch((err) => this.setState({
                 locationInfo: {},
                 isLoading: false,
-                isError: true
+                hasError: true
             }));
     }
 
@@ -55,16 +55,10 @@ class LocationInfo extends Component {
                 <hr/>
                 {this.state.isLoading && <Loader isMain={false}/>}
 
-                {!this.state.isLoading && this.state.isError &&
-                    (<div className='content-loader-container container-error'>
-                        <MdError className='error-icon text-warning'/>
-                        <div className='alert alert-warning alert-no-border text-center' role='alert'>
-                            Oops! <br/> Something is not right :(
-                        </div>
-                    </div>
-                )}
+                {!this.state.isLoading && this.state.hasError &&
+                    <ContentError />}
 
-                {!this.state.isLoading && !this.state.isError &&
+                {!this.state.isLoading && !this.state.hasError &&
                     (<div>
                         <img alt={this.state.locationInfo.name} 
                             src={this.state.locationInfo.photo}/>

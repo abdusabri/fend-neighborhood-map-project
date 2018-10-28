@@ -5,6 +5,7 @@ import ResizeObserver from 'resize-observer-polyfill';
 import { MdLocationOn } from 'react-icons/md';
 import PropTypes from 'prop-types';
 import LocationInfo from './location-info';
+import ContentError from './content-error';
 
 const API_KEY = 'pk.eyJ1IjoiYWJkdXNhYnJpIiwiYSI6ImNqbmg0dG9vMzA5YnMzcHRsc3NyYW9pZ3MifQ.GznJS1gglPuQoa-3RGeGeA';
 
@@ -38,11 +39,22 @@ class Map extends Component {
             pitch: 0,
             width: 500,
             height: 500
-        }
+        },
+        hasError: false,
+        isMapLoaded: false
     }
 
     componentDidMount() {
         new ResizeObserver(this.resize).observe(document.getElementById('map'));
+        setTimeout(() => {
+            if (!this.state.isMapLoaded) {
+                this.setState({
+                    isMapLoaded: true,
+                    hasError: true
+                });
+                this.props.onMapLoaded();
+            }
+        }, 15000);
     }
 
     resize = () => {
@@ -82,47 +94,67 @@ class Map extends Component {
         } else {
             this.props.onLocationSelected(null, this.props.history);
         }
-      }
+    }
+
+    handleOnError = () => {
+        this.setState({
+            hasError: true,
+            isMapLoaded: true
+        });
+        this.props.onMapLoaded();
+    }
+
+    handleMapLoaded = () => {
+        this.setState({
+            isMapLoaded: true
+        });
+        this.props.onMapLoaded();
+    }
 
     render() {
         return (
             <div id='map' role='application' aria-label='Map with locations'
                 style={{height: '100%', width: '100%'}}>
 
-                <ReactMapGL mapboxApiAccessToken={API_KEY}
-                    mapStyle='mapbox://styles/mapbox/streets-v10'
-                    {...this.state.viewport}
-                    onViewportChange={this.updateViewport}
-                    onLoad={this.props.onMapLoaded}>
+                {this.state.hasError && <ContentError />}
 
-                    {this.props.locations.map((location) => (
-                        <Marker key={location.id}
-                            longitude={location.longitude}
-                            latitude={location.latitude}>
-                            <span><MdLocationOn 
-                                className={(this.props.selectedLocation &&
-                                    this.props.selectedLocation.id === location.id) ?
-                                    'map-marker map-marker--selected' : 'map-marker'}
-                                onClick={() => (this.handleMarkerClick(location))}/>
-                            </span>
-                        </Marker>
-                    ))}
-
-                    {this.props.selectedLocation && (
-                        <Popup tipSize={10}
-                            anchor='top'
-                            longitude={this.props.selectedLocation.longitude}
-                            latitude={this.props.selectedLocation.latitude}
-                            onClose={this.handlePopupClose}
-                            closeOnClick={false}>
-                            <LocationInfo location={this.props.selectedLocation}/>
-                        </Popup>
-                    )}
-
-                    <div className='nav map-nav-control'>
-                        <NavigationControl onViewportChange={this.updateViewport} />
-                    </div>
-                </ReactMapGL>
+                {!this.state.hasError &&
+                    (<ReactMapGL mapboxApiAccessToken={API_KEY}
+                        mapStyle='mapbox://styles/mapbox/streets-v10'
+                        {...this.state.viewport}
+                        onViewportChange={this.updateViewport}
+                        onLoad={this.handleMapLoaded}
+                        onError={this.handleOnError}>
+    
+                        {this.props.locations.map((location) => (
+                            <Marker key={location.id}
+                                longitude={location.longitude}
+                                latitude={location.latitude}>
+                                <span><MdLocationOn 
+                                    className={(this.props.selectedLocation &&
+                                        this.props.selectedLocation.id === location.id) ?
+                                        'map-marker map-marker--selected' : 'map-marker'}
+                                    onClick={() => (this.handleMarkerClick(location))}/>
+                                </span>
+                            </Marker>
+                        ))}
+    
+                        {this.props.selectedLocation && (
+                            <Popup tipSize={10}
+                                anchor='top'
+                                longitude={this.props.selectedLocation.longitude}
+                                latitude={this.props.selectedLocation.latitude}
+                                onClose={this.handlePopupClose}
+                                closeOnClick={false}>
+                                <LocationInfo location={this.props.selectedLocation}/>
+                            </Popup>
+                        )}
+    
+                        <div className='nav map-nav-control'>
+                            <NavigationControl onViewportChange={this.updateViewport} />
+                        </div>
+                    </ReactMapGL>
+                )}
             </div>
         )
     };

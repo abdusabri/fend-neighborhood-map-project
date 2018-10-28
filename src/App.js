@@ -30,7 +30,7 @@ class App extends Component {
     sidebarOpen: false,
     locations: [],
     selectedLocation: null,
-    isMapLoaded: false,
+    isMapLoading: true,
     initialRender: true
   }
 
@@ -96,9 +96,9 @@ class App extends Component {
       <div>
         <Header />
         
-        {!this.state.isMapLoaded && <Loader isMain={true} />}
+        {this.state.isMapLoading && <Loader isMain={true} />}
 
-        {!this.state.sidebarDocked && this.state.isMapLoaded && (
+        {!this.state.sidebarDocked && !this.state.isMapLoading && (
           <button type='button'
                   className='btn btn-link menu-link' onClick={this.toggleOpen}>
               <MdMenu />
@@ -123,7 +123,7 @@ class App extends Component {
                     <Map locations={this.state.locations}
                         selectedLocation={this.state.selectedLocation}
                         onLocationSelected={this.handleLocationSelected}
-                        onMapLoaded={() => this.setState({ isMapLoaded: true })} 
+                        onMapLoaded={() => this.setState({ isMapLoading: false })} 
                         history={history}/>
                   </Sidebar>
               }/>
