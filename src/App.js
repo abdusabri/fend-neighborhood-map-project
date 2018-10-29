@@ -41,9 +41,14 @@ class App extends Component {
   componentDidMount() {
     sidebarMediaQuery.addListener(this.mediaQueryChanged);
     
+    // Listen to url changes to select the appropriate location
+    // so that its popup is displayed correctly
     if (this.routeRef.current) {
       this.routeRef.current.context.router.history
         .listen((location, action) => {
+          // If the action is not POP, it means it is a result of
+          // user interaction with the map or the locations list
+          // and no need to force-display or push to history
           if (action === 'POP') {
             this.setSelectedLocationBasedOnPath(location);
           }
@@ -52,6 +57,8 @@ class App extends Component {
   }
 
   componentDidUpdate() {
+    // Specially to handle the case where the user changes/enters/refreshes
+    // the url in the browser, and ensure the right view is rendered
     if (this.state.initialRender === true) {
       this.setState({initialRender: false});
       this.setSelectedLocationBasedOnPath(
@@ -61,7 +68,7 @@ class App extends Component {
 
   setSelectedLocationBasedOnPath = (location) => {
     const strLocId = location.pathname.substr(1);
-    if (strLocId && strLocId.length > 0) {
+    if (strLocId && strLocId.length > 0) { // url contains the id of a location
       const locationId = parseInt(strLocId);
       const targetLocation = this.state.locations.find(
         (location) => location.id === locationId);
@@ -124,6 +131,9 @@ class App extends Component {
         <main>
           <BrowserRouter>
             <Switch>
+              {/* Route uses a RegEx to match against the possible ids as contained
+                  in the "locations.json" file. Not the best or an automated way, but 
+                  works well for this case since the locations are mostly hard-coded */}
               <Route ref={this.routeRef} exact path='(/[1-2]?)' render={() => 
                 <Sidebar
                   open={this.state.sidebarOpen}

@@ -12,4 +12,4 @@ const ContentError = () => {
     )
 }
 
-export default ContentError
+export default ContentError;

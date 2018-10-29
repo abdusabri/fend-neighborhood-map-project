@@ -1,7 +1,7 @@
 const foursquare = require('react-foursquare')({
     clientID: 'M2OA3VPPXF4NL4433X1MJI5FJZNB1KARIN4IITNY0TSRVHA0',
     clientSecret: 'LJSSKQXYSE3CKHAX0OJ1LUQM13GUBFYRM1JZGBX5LQXFCUTF'  
-  });
+});
 
 export const getLocationInfo = function(location) {
     return new Promise(function(resolve, reject) {

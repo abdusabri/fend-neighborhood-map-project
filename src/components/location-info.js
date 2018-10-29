@@ -72,4 +72,4 @@ class LocationInfo extends Component {
       }
 }
 
-export default LocationInfo
+export default LocationInfo;

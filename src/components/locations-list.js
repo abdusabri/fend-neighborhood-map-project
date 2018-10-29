@@ -42,7 +42,7 @@ class LocationsList extends Component {
     
     filterLocations(filterText) {
         if (filterText.length === 0) {
-            this.props.onLocationsFiltered(LOCATIONS);
+            this.props.onLocationsFiltered(LOCATIONS); // Reset locations if text is cleared
         } else {
             const match = new RegExp(escapeRegExp(filterText), 'i');
             const filteredLocations =
