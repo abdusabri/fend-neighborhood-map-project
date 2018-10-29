@@ -45,22 +45,33 @@ class App extends Component {
       this.routeRef.current.context.router.history
         .listen((location, action) => {
           if (action === 'POP') {
-            const strLocId = location.pathname.substr(1);
-            if (strLocId && strLocId.length > 0) {
-              const locationId = parseInt(strLocId);
-              const targetLocation = this.state.locations.find(
-                (location) => location.id === locationId);
-              if (targetLocation) {
-                this.handleLocationSelected(targetLocation, false);
-              } else {
-                this.handleLocationSelected(null, true);
-              }
-              
-            } else {
-              this.handleLocationSelected(null, false);
-            }
+            this.setSelectedLocationBasedOnPath(location);
           }
       });
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.state.initialRender === true) {
+      this.setState({initialRender: false});
+      this.setSelectedLocationBasedOnPath(
+        this.routeRef.current.context.router.history.location);
+    }
+  }
+
+  setSelectedLocationBasedOnPath = (location) => {
+    const strLocId = location.pathname.substr(1);
+    if (strLocId && strLocId.length > 0) {
+      const locationId = parseInt(strLocId);
+      const targetLocation = this.state.locations.find(
+        (location) => location.id === locationId);
+      if (targetLocation) {
+        this.handleLocationSelected(targetLocation, false);
+      } else {
+        this.handleLocationSelected(null, true);
+      }    
+    } else {
+      this.handleLocationSelected(null, false);
     }
   }
 
@@ -109,23 +120,6 @@ class App extends Component {
       const history = this.routeRef.current.context.router.history;
       if (pushToHistory) {
         history.push(path);
-      }
-    }
-  }
-
-  componentDidUpdate() {
-    if (this.state.initialRender === true) {
-      this.setState({initialRender: false});
-
-      const history = this.routeRef.current.context.router.history;
-
-      const strLocId = history.location.pathname.substr(1);
-      if (strLocId && strLocId.length > 0) {
-        const locationId = parseInt(strLocId);
-        this.handleLocationSelected(this.state.locations.find(
-          (location) => location.id === locationId));
-      } else {
-        this.handleLocationSelected(null);
       }
     }
   }
