@@ -92,16 +92,14 @@ class App extends Component {
     }
   }
 
-  handleLocationsFiltered = (filteredLocations) => {
-    this.setState({ locations: filteredLocations });
-  }
-
   handleLocationSelected = (location, pushToHistory=true) => {
     if (JSON.stringify(location) !== 
       JSON.stringify(this.state.selectedLocation)) {
-        this.setState({ selectedLocation : null });
+        if (this.state.selectedLocation !== null) {
+          this.setState({ selectedLocation : null });
+        }
         this.setState({ selectedLocation : location });
-        
+
         if (pushToHistory) {
           this.routeRef.current.context.router.history
             .push((location) ? '/' + location.id : '/');
@@ -118,8 +116,8 @@ class App extends Component {
 
         {!this.state.sidebarDocked && !this.state.isMapLoading && (
           <button type='button'
-                  className='btn btn-link menu-link' onClick={this.toggleOpen}>
-              <MdMenu />
+              className='btn btn-link menu-link' onClick={this.toggleOpen}>
+                <MdMenu />
           </button>
         )}
 
@@ -134,9 +132,11 @@ class App extends Component {
                   styles={sidebarStyle}
                   sidebar={<LocationsList 
                     locations={this.state.locations}
-                    onLocationsFiltered={this.handleLocationsFiltered}
+                    onLocationsFiltered={(filteredLocations) => 
+                      this.setState({ locations: filteredLocations })}
                     onLocationSelected={this.handleLocationSelected}
                     selectedLocation={this.state.selectedLocation}/>}>
+
                     <Map locations={this.state.locations}
                         selectedLocation={this.state.selectedLocation}
                         onLocationSelected={this.handleLocationSelected}

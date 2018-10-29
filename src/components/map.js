@@ -71,18 +71,6 @@ class Map extends Component {
         });
     }
 
-    updateViewport = (viewport) => {
-        this.setState({viewport});
-    }
-
-    handlePopupClose = () => {
-        this.props.onLocationSelected(null);
-    }
-
-    handleMarkerClick = (location) => {
-        this.props.onLocationSelected(location);
-    }
-
     handleOnError = () => {
         this.setState({
             hasError: true,
@@ -109,7 +97,7 @@ class Map extends Component {
                     (<ReactMapGL mapboxApiAccessToken={API_KEY}
                         mapStyle='mapbox://styles/mapbox/streets-v10??optimize=true'
                         {...this.state.viewport}
-                        onViewportChange={this.updateViewport}
+                        onViewportChange={(viewport) => this.setState({viewport})}
                         onLoad={this.handleMapLoaded}
                         onError={this.handleOnError}
                         touchRotate={true}
@@ -123,7 +111,7 @@ class Map extends Component {
                                     className={(this.props.selectedLocation &&
                                         this.props.selectedLocation.id === location.id) ?
                                         'map-marker map-marker--selected' : 'map-marker'}
-                                    onClick={() => (this.handleMarkerClick(location))}/>
+                                    onClick={() => this.props.onLocationSelected(location)}/>
                                 </span>
                             </Marker>
                         ))}
@@ -133,7 +121,7 @@ class Map extends Component {
                                 anchor='top'
                                 longitude={this.props.selectedLocation.longitude}
                                 latitude={this.props.selectedLocation.latitude}
-                                onClose={this.handlePopupClose}
+                                onClose={() => this.props.onLocationSelected(null)}
                                 closeOnClick={false}>
                                 <LocationInfo location={this.props.selectedLocation}/>
                             </Popup>

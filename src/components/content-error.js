@@ -2,7 +2,6 @@ import React from 'react';
 import { MdError } from 'react-icons/md';
 
 const ContentError = () => {
-    
     return (
         <div className='content-loader-container container-error'>
             <MdError className='error-icon text-warning'/>

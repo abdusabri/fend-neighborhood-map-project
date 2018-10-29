@@ -41,7 +41,7 @@ class LocationInfo extends Component {
                 locationInfo: res,
                 isLoading: false
             }))
-            .catch((err) => this.setState({
+            .catch(() => this.setState({
                 locationInfo: {},
                 isLoading: false,
                 hasError: true

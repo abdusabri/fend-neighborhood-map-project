@@ -38,7 +38,7 @@ class LocationsList extends Component {
         this.filterLocationsDebounced(e.target.value);
     }
 
-    filterLocationsDebounced = debounce(this.filterLocations, 200)
+    filterLocationsDebounced = debounce(this.filterLocations, 200);
     
     filterLocations(filterText) {
         if (filterText.length === 0) {
