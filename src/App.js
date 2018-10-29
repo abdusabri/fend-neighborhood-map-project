@@ -97,30 +97,15 @@ class App extends Component {
   }
 
   handleLocationSelected = (location, pushToHistory=true) => {
-    if (!location && !this.state.selectedLocation) {
-      return;
-    }
-
-    let shouldUpdate = false;
-
-    if (!location && this.state.selectedLocation) {
-      shouldUpdate = true;
-    } else {
-      if (!this.state.selectedLocation || 
-        this.state.selectedLocation.id !== location.id) {
-          shouldUpdate = true;
-      }
-    }
-
-    if (shouldUpdate) {
-      this.setState({ selectedLocation : null });
-      this.setState({ selectedLocation : location });
-
-      const path = (location) ? '/' + location.id : '/';
-      const history = this.routeRef.current.context.router.history;
-      if (pushToHistory) {
-        history.push(path);
-      }
+    if (JSON.stringify(location) !== 
+      JSON.stringify(this.state.selectedLocation)) {
+        this.setState({ selectedLocation : null });
+        this.setState({ selectedLocation : location });
+        
+        if (pushToHistory) {
+          this.routeRef.current.context.router.history
+            .push((location) ? '/' + location.id : '/');
+        }
     }
   }
 
