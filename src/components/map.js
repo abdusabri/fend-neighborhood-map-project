@@ -31,13 +31,13 @@ class Map extends Component {
     
     state = {
         viewport: {
-            latitude: 52.529,
-            longitude: 13.435,
-            zoom: 10.12,
+            latitude: 52.492,
+            longitude: 13.344,
+            zoom: 11.50,
             bearing: 0,
             pitch: 0,
-            width: 500,
-            height: 500
+            width: 600,
+            height: 600
         },
         hasError: false,
         isMapLoaded: false

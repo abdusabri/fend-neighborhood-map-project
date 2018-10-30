@@ -10,5 +10,47 @@
         "name":"Forst Grunewald",
         "latitude":52.484452858289536,
         "longitude":13.236808776855469
+    },
+    {
+        "id":3,
+        "name":"Tempelhofer Feld",
+        "latitude":52.472952199914666,
+        "longitude":13.40383529663086
+    },
+    {
+        "id":4,
+        "name":"Olympiastadion",
+        "latitude":52.514849775310154,
+        "longitude":13.23976993560791
+    },
+    {
+        "id":5,
+        "name":"Classic Remise Berlin",
+        "latitude":52.53026879229302,
+        "longitude":13.318734169006348
+    },
+    {
+        "id":6,
+        "name":"Berlin Hauptbahnhof",
+        "latitude":52.52514568279177,
+        "longitude":13.36933152981362
+    },
+    {
+        "id":7,
+        "name":"Botanischer Garten",
+        "latitude":52.45454489329064,
+        "longitude":13.304400444030762
+    },
+    {
+        "id":8,
+        "name":"Tiergarten",
+        "latitude":52.51462778550934,
+        "longitude":13.357207775115967
+    },
+    {
+        "id":9,
+        "name":"Dussmann das KulturKaufhaus",
+        "latitude":52.51839819531867,
+        "longitude":13.388788104057312
     }
 ]

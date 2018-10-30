@@ -134,7 +134,7 @@ class App extends Component {
               {/* Route uses a RegEx to match against the possible ids as contained
                   in the "locations.json" file. Not the best or an automated way, but 
                   works well for this case since the locations are mostly hard-coded */}
-              <Route ref={this.routeRef} exact path='(/[1-2]?)' render={() => 
+              <Route ref={this.routeRef} exact path='(/[1-9]?)' render={() => 
                 <Sidebar
                   open={this.state.sidebarOpen}
                   docked={this.state.sidebarDocked}
