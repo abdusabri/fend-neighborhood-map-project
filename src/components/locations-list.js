@@ -46,7 +46,7 @@ class LocationsList extends Component {
         } else {
             const match = new RegExp(escapeRegExp(filterText), 'i');
             const filteredLocations =
-                this.props.locations.filter((location) => match.test(location.name));
+                LOCATIONS.filter((location) => match.test(location.name));
             // Clear selected location if it has been filtered-out 
             if (this.props.selectedLocation && 
                 filteredLocations.findIndex((location) => 
