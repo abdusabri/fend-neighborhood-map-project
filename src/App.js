@@ -109,7 +109,7 @@ class App extends Component {
 
         if (pushToHistory) {
           this.routeRef.current.context.router.history
-            .push((location) ? '/' + location.id : '/');
+            .push((location) ? '/fend-neighborhood-map-project/' + location.id : '/fend-neighborhood-map-project');
         }
     }
   }
@@ -134,7 +134,7 @@ class App extends Component {
               {/* Route uses a RegEx to match against the possible ids as contained
                   in the "locations.json" file. Not the best or an automated way, but 
                   works well for this case since the locations are mostly hard-coded */}
-              <Route ref={this.routeRef} exact path='(/[1-9]?)' render={() => 
+              <Route ref={this.routeRef} exact path='(/fend-neighborhood-map-project/[1-9]?)' render={() => 
                 <Sidebar
                   open={this.state.sidebarOpen}
                   docked={this.state.sidebarDocked}
@@ -153,7 +153,7 @@ class App extends Component {
                         onMapLoaded={() => this.setState({ isMapLoading: false })} />
                   </Sidebar>
               }/>
-              <Redirect from='*' to='/' />
+              <Redirect from='*' to='/fend-neighborhood-map-project' />
             </Switch>
           </BrowserRouter>
         </main>
