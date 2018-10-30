@@ -67,7 +67,7 @@ class App extends Component {
   }
 
   setSelectedLocationBasedOnPath = (location) => {
-    const strLocId = location.pathname.substr(1);
+    const strLocId = location.pathname.substr(location.pathname.lastIndexOf('/') + 1);
     if (strLocId && strLocId.length > 0) { // url contains the id of a location
       const locationId = parseInt(strLocId);
       const targetLocation = this.state.locations.find(
@@ -153,7 +153,7 @@ class App extends Component {
                         onMapLoaded={() => this.setState({ isMapLoading: false })} />
                   </Sidebar>
               }/>
-              <Redirect from='*' to='/fend-neighborhood-map-project' />
+              <Redirect from='*' to='/fend-neighborhood-map-project/' />
             </Switch>
           </BrowserRouter>
         </main>
