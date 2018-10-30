@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.2/workbox-sw.js");
 
 importScripts(
-  "/fend-neighborhood-map/precache-manifest.6a278773ae7e04f2536f36eae328cb8a.js"
+  "/fend-neighborhood-map-project/precache-manifest.8f2e6bf08165c91b7127953a0791639c.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("/fend-neighborhood-map/index.html", {
+workbox.routing.registerNavigationRoute("/fend-neighborhood-map-project/index.html", {
   
   blacklist: [/^\/_/,/\/[^\/]+\.[^\/]+$/],
 });
