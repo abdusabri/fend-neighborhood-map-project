@@ -100,7 +100,7 @@ class App extends Component {
   }
 
   handleLocationSelected = (location, pushToHistory=true) => {
-    if (JSON.stringify(location) !== 
+    if (JSON.stringify(location) !==
       JSON.stringify(this.state.selectedLocation)) {
         if (this.state.selectedLocation !== null) {
           this.setState({ selectedLocation : null });
