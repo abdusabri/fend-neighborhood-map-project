@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.2/workbox-sw.js");
 
 importScripts(
-  "/fend-neighborhood-map-project/precache-manifest.cc799c4a8385cc1b99d87ced2e565520.js"
+  "/fend-neighborhood-map-project/precache-manifest.16742dfdcd6f035cb0e9968cc0980795.js"
 );
 
 workbox.clientsClaim();
