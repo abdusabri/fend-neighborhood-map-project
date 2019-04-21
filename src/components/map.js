@@ -132,7 +132,7 @@ class Map extends Component {
           <ReactMapGL
             ref={this.mapRef}
             mapboxApiAccessToken={API_KEY}
-            mapStyle="mapbox://styles/mapbox/streets-v10??optimize=true"
+            mapStyle="mapbox://styles/mapbox/streets-v10?optimize=true"
             {...this.state.viewport}
             onViewportChange={viewport => this.setState({ viewport })}
             onLoad={this.handleMapLoaded}
